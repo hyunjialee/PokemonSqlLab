@@ -1,24 +1,40 @@
 Part 2:
-- Types of Pokemon:1 | Normal   |
-                   |  2 | Water    |
-                   |  3 | Grass    |
-                   |  4 | Rock     |
-                   |  5 | Fire     |
-                   |  6 | Ground   |
-                   |  7 | Poison   |
-                   |  8 | Bug      |
-                   |  9 | Electric |
-                   | 10 | Dragon   |
-                   | 11 | Steel    |
-                   | 12 | Dark     |
-                   | 13 | Fighting |
-                   | 14 | Psychic  |
-                   | 15 | Ghost    |
-                   | 16 | Fairy    |
-                   | 17 | Ice      |
-                   | 18 | Flying
+- Types of Pokemon:
+Select count(id) from types;
 
 
-- Name of the pokemon ID 45: Eevee
+-Name of the pokemon ID 45: Eevee
+Select name from pokemons WHERE id = 45;
 
 -How many pokemon are there: 656
+Select count(id) from pokemons;
+
+-How many types are there: 18
+Select count(types) from pokemons;
+
+-How many pokemon have a secondary type: 316
+Select count(secondary_type) from pokemons;
+
+Part 3:
+-What is each pokemon's primary type?
+Select p.name, t.name from pokemons p left join types t on p.primary_type = t.id;
+
+-What is Rufflet's secondary type?
+Select t.name from types t left join pokemon p on t.id = p.secondary_type where p.name = 'Rufflet';
+
+-What are the names of the pokemon that belong to the trainer with trainerID 303?
+Select p.name from pokemons p LEFT JOIN pokemon_trainer pt ON p.id = pt.pokemon_id WHERE pt.trainerID = 303;
+
+-How many pokemon have a secondary type poison?
+Select count(*) from pokemons p LEFT JOIN types t ON p.secondary_type = t.id WHERE t.name = 'Poison';
+
+-What are all the primary types and how many pokemon have that type?
+Select t.names, count(*) from pokemons p LEFT JOIN types t ON p.primary_type = t.id GROUP BY p.primary_type;
+
+-How many pokemon at level 100 does each trainer with at least one level 100 pokemon have?
+Select count(*) from pokemon_trainer where pokelevel = 100 and trainerID is not null; ???
+
+-How many pokemon only belong to one trainer and no other?
+Select count(*) from pokemon_trainer group by pokemon_id having count(*) = 1;
+
+Select count(*) from (Select count(*) as a from pokemon_trainer group by pokemon_id having count(*) = 1) as sub;
